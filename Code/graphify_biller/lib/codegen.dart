@@ -1,0 +1,212 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import 'package:graphify_biller/adgen.dart';
+import 'package:graphify_biller/view/components/rowtext.dart';
+
+class CodeDescGen extends StatefulWidget {
+  final String name;
+  final String phone;
+  final String address;
+  final String invoicenumber;
+  const CodeDescGen({
+    Key? key,
+    required this.name,
+    required this.phone,
+    required this.address,
+    required this.invoicenumber,
+  }) : super(key: key);
+
+  @override
+  State<CodeDescGen> createState() => CodeDescGenState();
+}
+
+class CodeDescGenState extends State<CodeDescGen> {
+  TextEditingController rate = TextEditingController();
+  TextEditingController description = TextEditingController();
+  TextEditingController gst = TextEditingController();
+
+  List<Map<String, String>> tabledata = [];
+  double totalval = 0.0;
+
+  void addrow() {
+    String rateforrow = rate.text;
+    String descforrow = description.text;
+    String gstforrow = gst.text;
+    double calculatedRate =
+        ((int.parse(rateforrow) * (int.parse(gstforrow) / 100)) +
+            int.parse(rateforrow));
+
+    if (rateforrow.isNotEmpty &&
+        descforrow.isNotEmpty &&
+        gstforrow.isNotEmpty) {
+      setState(() {
+        tabledata.add({
+          'Description': descforrow,
+          "Rate": rateforrow,
+          "GST": gstforrow,
+          "Calculated Rate": calculatedRate.toString(),
+        });
+        totalval += calculatedRate;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Graphify Infotech Swiftbiller',
+          style: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontFamily: GoogleFonts.jost().fontFamily),
+        ),
+      ),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: SizedBox(
+
+            // width: MediaQuery.of(context).size.width * 0.8,
+            child: Column(
+          children: [
+            Text(widget.name),
+            Text(widget.phone),
+            Text(widget.address),
+            Container(
+              margin: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.blue.withAlpha((0.5 * 255).toInt()),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: SizedBox(
+                  child: RowFields(
+                description: description,
+                rate: rate,
+                gst: gst,
+                onButtonPressed: () {
+                  addrow();
+                },
+              )),
+            ),
+            DataTableTheme(
+              data: DataTableThemeData(
+                headingTextStyle: TextStyle(
+                    fontFamily: GoogleFonts.jost().fontFamily, fontSize: 20),
+                dataTextStyle: TextStyle(
+                    fontFamily: GoogleFonts.jost().fontFamily, fontSize: 20),
+                dataRowHeight: 50,
+                columnSpacing: 10,
+                horizontalMargin: 16,
+                dividerThickness: 1,
+              ),
+              child: DataTable(
+                columnSpacing: MediaQuery.of(context).size.width * 0.2,
+                horizontalMargin: 16,
+                columns: [
+                  DataColumn(
+                      label: Text(
+                    'Description',
+                    style: TextStyle(
+                      fontFamily: GoogleFonts.jost().fontFamily,
+                      fontSize: 20,
+                    ),
+                  )),
+                  DataColumn(
+                      label: Text(
+                    'Rate',
+                    style: TextStyle(
+                        fontFamily: GoogleFonts.jost().fontFamily,
+                        fontSize: 20),
+                  )),
+                  DataColumn(
+                      label: Text(
+                    'GST',
+                    style: TextStyle(
+                        fontFamily: GoogleFonts.jost().fontFamily,
+                        fontSize: 20),
+                  )),
+                  DataColumn(
+                      label: Text(
+                    'Calculated Rate',
+                    style: TextStyle(
+                        fontFamily: GoogleFonts.jost().fontFamily,
+                        fontSize: 20),
+                  )),
+                ],
+                rows: tabledata.map((row) {
+                  return DataRow(cells: [
+                    DataCell(Text(
+                      row['Description'] ?? '',
+                      style: TextStyle(
+                          fontFamily: GoogleFonts.jost().fontFamily,
+                          fontSize: 16),
+                    )),
+                    DataCell(Text(
+                      row['Rate'] ?? '',
+                      style: TextStyle(
+                          fontFamily: GoogleFonts.jost().fontFamily,
+                          fontSize: 16),
+                    )),
+                    DataCell(Text(
+                      row['GST'] ?? '',
+                      style: TextStyle(
+                          fontFamily: GoogleFonts.jost().fontFamily,
+                          fontSize: 16),
+                    )),
+                    DataCell(Text(
+                      row['Calculated Rate'] ?? '',
+                      style: TextStyle(
+                          fontFamily: GoogleFonts.jost().fontFamily,
+                          fontSize: 16),
+                    )),
+                  ]);
+                }).toList(),
+              ),
+            ),
+
+            //Updated Totalvalue -  - - - - -- -  - -- - - - - - - - -- - - - - - - -  - - -- -  - - - -
+            Text(
+              'Total: $totalval',
+              style: TextStyle(
+                  fontFamily: GoogleFonts.jost().fontFamily, fontSize: 20),
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AdGenRate(
+                                invoicenumber: widget.invoicenumber,
+                                name: widget.name,
+                                phone: widget.phone,
+                                address: widget.address,
+                                tabledata: tabledata,
+                                totalcodeval: totalval,
+                              )));
+                },
+                child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    "Next",
+                    style: TextStyle(
+                        fontFamily: GoogleFonts.jost().fontFamily,
+                        fontSize: 20),
+                  ),
+                ))
+          ],
+        )),
+      ),
+    );
+  }
+}
