@@ -39,6 +39,7 @@ dependencies:
   pdf: ^3.11.2
   printing: ^5.14.0
   intl: ^0.20.2
+  http_interceptor: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +70,11 @@ flutter:
     - images/GraphifyInfotech.png
     - images/RemainingTemplate.png
     - images/RoundTable.jpg
+    - fonts/calibri-regular.ttf
+    - fonts/calibri-bold.ttf
+    - fonts/Jost-Regular.ttf
+    - fonts/Jost-SemiBold.ttf
+    - fonts/Jost-Medium.ttf
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

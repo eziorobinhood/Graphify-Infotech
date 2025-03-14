@@ -71,7 +71,7 @@ class _AdGenRateState extends State<AdGenRate> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Graphify Infotech Swiftbiller',
+          'Marketing Invoice Description',
           style: TextStyle(
               fontWeight: FontWeight.w700,
               fontFamily: GoogleFonts.jost().fontFamily),
@@ -83,10 +83,26 @@ class _AdGenRateState extends State<AdGenRate> {
             // width: MediaQuery.of(context).size.width * 0.8,
             child: Column(
           children: [
-            Text(widget.name),
-            Text(widget.phone),
-            Text(widget.address),
-            Text(widget.tabledata.toString()),
+            Container(
+              margin: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.blue.withAlpha((0.5 * 255).toInt()),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Image.asset(
+                'images/GraphifyInfotech.png',
+                width: 200,
+                height: 100,
+              ),
+            ),
             Container(
               margin: const EdgeInsets.all(20),
               padding: const EdgeInsets.all(30),
@@ -185,36 +201,66 @@ class _AdGenRateState extends State<AdGenRate> {
                 ]);
               }).toList(),
             ),
-            Text(
-              'Total Code: ${widget.totalcodeval}',
-              style: TextStyle(
-                  fontFamily: GoogleFonts.jost().fontFamily, fontSize: 20),
-            ),
-            Text(
-              'Total ADS: $totaladvalue',
-              style: TextStyle(
-                  fontFamily: GoogleFonts.jost().fontFamily, fontSize: 20),
-            ),
-            Row(
-              children: [
-                Text('Service Charges Per month:'),
-                SizedBox(
-                  width: 100,
-                  child: TextField(
-                    controller: serviceCharge,
-                    decoration: InputDecoration(
-                      hintText: 'Enter Service Charge',
-                    ),
+            Container(
+              margin: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.blue.withAlpha((0.5 * 255).toInt()),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: const Offset(0, 3),
                   ),
-                ),
-              ],
+                ],
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Service Charges Per month:  ',
+                        style: TextStyle(
+                            fontFamily: GoogleFonts.jost().fontFamily,
+                            fontSize: 18),
+                      ),
+                      SizedBox(
+                        width: 200,
+                        child: TextField(
+                          controller: serviceCharge,
+                          decoration: InputDecoration(
+                              hintText: 'Enter Service Charge',
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text('Enter 0 if not applicalble',
+                      style: TextStyle(
+                          fontFamily: GoogleFonts.jost().fontFamily,
+                          fontSize: 18,
+                          color: Colors.red)),
+                ],
+              ),
             ),
             ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.blue, overlayColor: Colors.black),
                 onPressed: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => PdfGeneratorPage(
+                                totalcost: totaladvalue + widget.totalcodeval,
+                                servicecost: double.parse(serviceCharge.text),
                                 name: widget.name,
                                 phno: widget.phone,
                                 address: widget.address,
@@ -231,7 +277,8 @@ class _AdGenRateState extends State<AdGenRate> {
                         fontFamily: GoogleFonts.jost().fontFamily,
                         fontSize: 20),
                   ),
-                ))
+                )),
+            SizedBox(height: 20),
           ],
         )),
       ),

@@ -16,7 +16,7 @@ class ContactForm extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 8),
-        TextField(
+        TextFormField(
           maxLines: 1,
           controller: nameController,
           decoration: InputDecoration(

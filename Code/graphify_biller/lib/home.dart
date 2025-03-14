@@ -55,6 +55,11 @@ class _HomepageState extends State<Homepage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    Image.asset(
+                      'images/GraphifyInfotech.png',
+                      width: 200,
+                      height: 100,
+                    ),
                     SizedBox(
                         width: MediaQuery.of(context).size.width * 0.7,
                         child: Text(
@@ -112,15 +117,55 @@ class _HomepageState extends State<Homepage> {
                       ],
                     ),
                     ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.blue,
+                            overlayColor: Colors.black),
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CodeDescGen(
-                                      invoicenumber: invoicenumber.text,
-                                      name: recnameController.text,
-                                      phone: phonenumber.text,
-                                      address: address.text)));
+                          if (invoicenumber.text.isEmpty ||
+                              recnameController.text.isEmpty ||
+                              phonenumber.text.isEmpty ||
+                              address.text.isEmpty) {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text(
+                                      "Note",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontFamily:
+                                              GoogleFonts.jost().fontFamily),
+                                    ),
+                                    content: Text("Please fill all the details",
+                                        style: TextStyle(
+                                            fontFamily:
+                                                GoogleFonts.jost().fontFamily)),
+                                    elevation: 10,
+                                    shape: BeveledRectangleBorder(),
+                                    actions: [
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text(
+                                            "OK",
+                                            style: TextStyle(
+                                                fontFamily: GoogleFonts.jost()
+                                                    .fontFamily),
+                                          ))
+                                    ],
+                                  );
+                                });
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CodeDescGen(
+                                        invoicenumber: invoicenumber.text,
+                                        name: recnameController.text,
+                                        phone: phonenumber.text,
+                                        address: address.text)));
+                          }
                         },
                         child: Padding(
                           padding: EdgeInsets.all(10),

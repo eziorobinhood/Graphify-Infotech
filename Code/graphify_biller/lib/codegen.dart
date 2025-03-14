@@ -58,7 +58,7 @@ class CodeDescGenState extends State<CodeDescGen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Graphify Infotech Swiftbiller',
+          'Technical Invoice Description',
           style: TextStyle(
               fontWeight: FontWeight.w700,
               fontFamily: GoogleFonts.jost().fontFamily),
@@ -71,9 +71,27 @@ class CodeDescGenState extends State<CodeDescGen> {
             // width: MediaQuery.of(context).size.width * 0.8,
             child: Column(
           children: [
-            Text(widget.name),
-            Text(widget.phone),
-            Text(widget.address),
+            Container(
+              margin: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.blue.withAlpha((0.5 * 255).toInt()),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Image.asset(
+                'images/GraphifyInfotech.png',
+                width: 200,
+                height: 100,
+              ),
+            ),
+
             Container(
               margin: const EdgeInsets.all(20),
               padding: const EdgeInsets.all(30),
@@ -182,6 +200,8 @@ class CodeDescGenState extends State<CodeDescGen> {
                   fontFamily: GoogleFonts.jost().fontFamily, fontSize: 20),
             ),
             ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.blue, overlayColor: Colors.black),
                 onPressed: () {
                   Navigator.push(
                       context,
