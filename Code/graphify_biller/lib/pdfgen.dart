@@ -919,7 +919,9 @@ class _PdfGeneratorPageState extends State<PdfGeneratorPage> {
                     pw.SizedBox(height: 20), // Add spacing between lines
                     pw.Text('Email:\ninfo@graphifyinfotech.com',
                         style: pw.TextStyle(
-                            fontSize: 12, fontWeight: pw.FontWeight.bold)),
+                            font: pw.Font.ttf(pdffontbold),
+                            fontSize: 12,
+                            fontWeight: pw.FontWeight.bold)),
                     pw.SizedBox(height: 20), // Add spacing between lines
                     pw.Text('Phone Number:\n+91 90428 95697 / +91 96777 04249',
                         style: pw.TextStyle(
@@ -961,47 +963,6 @@ class _PdfGeneratorPageState extends State<PdfGeneratorPage> {
     setState(() {
       _isLoading = false;
     });
-  }
-
-  Future<void> postData() async {
-    final url = Uri.parse(
-        'http://localhost:3000/api/invoices'); // Replace with your API endpoint
-    try {
-      final response = await http.post(
-        url,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, dynamic>{
-          'invoice_number': widget.invoicenumber,
-          'recipient_name': widget.name,
-          'phone_number': widget.phno,
-          'address': widget.address,
-          'totalamount': (widget.totalcost).toString(), // Convert to double
-          'advance_paid': advancepaid.text, // Convert to double
-          'balance_amount': (widget.totalcost - double.parse(advancepaid.text))
-              .toString() // Convert to double
-        }),
-      );
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Invoice submitted successfully')),
-        );
-        // Clear form or navigate
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to submit invoice')),
-        );
-        print('Failed to submit invoice. Status code: ${response.statusCode}');
-        print('Response body: ${response.body}');
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('An error occurred')),
-      );
-      print('Error submitting invoice: $e');
-    }
   }
 
   @override
@@ -1442,8 +1403,7 @@ class _PdfGeneratorPageState extends State<PdfGeneratorPage> {
             ),
             ElevatedButton(
               onPressed: () {
-                // _isLoading ? null : _generatePdf();
-                postData();
+                _isLoading ? null : _generatePdf();
               },
               style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.blue, overlayColor: Colors.black),

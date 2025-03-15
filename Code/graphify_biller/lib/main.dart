@@ -18,15 +18,6 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
           useMaterial3: true,
         ),
-        home: PdfGeneratorPage(
-          name: 'Rahuram',
-          phno: '89712873132',
-          address: 'dasjjkhdkjahs',
-          invoicenumber: '213187382',
-          tabledata: [],
-          addata: [],
-          servicecost: 8000,
-          totalcost: 45000,
-        ));
+        home: Homepage());
   }
 }
