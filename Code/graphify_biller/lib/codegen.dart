@@ -107,6 +107,28 @@ class CodeDescGenState extends State<CodeDescGen> {
                   ),
                 ],
               ),
+              child: Text("Enter 0 if tax is not applicable",
+                  style: TextStyle(
+                      fontFamily: GoogleFonts.jost().fontFamily,
+                      fontSize: 20,
+                      color: Colors.red)),
+            ),
+
+            Container(
+              margin: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.blue.withAlpha((0.5 * 255).toInt()),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
               child: SizedBox(
                   child: RowFields(
                 description: description,
@@ -177,7 +199,7 @@ class CodeDescGenState extends State<CodeDescGen> {
                           fontSize: 16),
                     )),
                     DataCell(Text(
-                      row['GST'] ?? '',
+                      row['GST'] ?? '-',
                       style: TextStyle(
                           fontFamily: GoogleFonts.jost().fontFamily,
                           fontSize: 16),

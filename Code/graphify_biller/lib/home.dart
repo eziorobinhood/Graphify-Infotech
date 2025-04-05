@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graphify_biller/codegen.dart';
+import 'package:graphify_biller/invoicefinder.dart';
 import 'package:graphify_biller/view/components/textfield.dart';
 
 class Homepage extends StatefulWidget {
@@ -176,6 +177,26 @@ class _HomepageState extends State<Homepage> {
                                 fontWeight: FontWeight.bold),
                           ),
                         )),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.blue,
+                            overlayColor: Colors.black),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => InvoiceFinder()));
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Text(
+                            "Invoice Directory",
+                            style: TextStyle(
+                                fontFamily: GoogleFonts.jost().fontFamily,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ))
                   ],
                 ),
               ),

@@ -1,6 +1,6 @@
 {
-    "name": "graphify_biller",
-    "short_name": "graphify_biller",
+    "name": "api_tester",
+    "short_name": "api_tester",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

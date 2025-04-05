@@ -33,6 +33,25 @@
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyDresLDshgKMsmXjH2GIEqKlWx9uFc_w60",
+      authDomain: "graphify-infotech-bill.firebaseapp.com",
+      projectId: "graphify-infotech-bill",
+      storageBucket: "graphify-infotech-bill.firebasestorage.app",
+      messagingSenderId: "336597112650",
+      appId: "1:336597112650:web:86e30c210431a90ef5d3b3"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+  </script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

@@ -40,10 +40,10 @@ class _AdGenRateState extends State<AdGenRate> {
     String descforrow = description.text;
     String gstforrow = gst.text;
     String daysforads = days.text;
-    double calculatedrate =
-        (((int.parse(rateforrow) * (int.parse(gstforrow) / 100)) *
-                int.parse(daysforads)) +
-            int.parse(rateforrow));
+    double gstcalc = double.parse(rateforrow) * (double.parse(gstforrow) / 100);
+    double calculatedrate = gst.text == "0"
+        ? double.parse(rateforrow) * double.parse(daysforads)
+        : (double.parse(rateforrow) + gstcalc) * double.parse(daysforads);
 
     if (rateforrow.isNotEmpty &&
         descforrow.isNotEmpty &&
@@ -102,6 +102,27 @@ class _AdGenRateState extends State<AdGenRate> {
                 width: 200,
                 height: 100,
               ),
+            ),
+            Container(
+              margin: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.blue.withAlpha((0.5 * 255).toInt()),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Text("Enter 0 if tax is not applicable",
+                  style: TextStyle(
+                      fontFamily: GoogleFonts.jost().fontFamily,
+                      fontSize: 20,
+                      color: Colors.red)),
             ),
             Container(
               margin: const EdgeInsets.all(20),
@@ -243,7 +264,7 @@ class _AdGenRateState extends State<AdGenRate> {
                   SizedBox(
                     height: 20,
                   ),
-                  Text('Enter 0 if not applicalble',
+                  Text('Enter 0 if Service Charges are not applicalble',
                       style: TextStyle(
                           fontFamily: GoogleFonts.jost().fontFamily,
                           fontSize: 18,

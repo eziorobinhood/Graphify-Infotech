@@ -6,6 +6,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:graphify_biller/home.dart';
 import 'package:http_interceptor/http_interceptor.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
@@ -38,8 +39,6 @@ class PdfGeneratorPage extends StatefulWidget {
 
 class _PdfGeneratorPageState extends State<PdfGeneratorPage> {
   bool _isLoading = false;
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
   final TextEditingController advancepaid = TextEditingController();
 
   Future<void> _generatePdf() async {
@@ -157,7 +156,7 @@ class _PdfGeneratorPageState extends State<PdfGeneratorPage> {
                     ...widget.tabledata.map((e) => [
                           e['Description'] ?? '',
                           e['Rate'] ?? '',
-                          e['GST in %'] ?? '',
+                          e['GST'] ?? '',
                           e['Calculated Rate'] ?? '',
                         ]),
                   ],
@@ -186,7 +185,7 @@ class _PdfGeneratorPageState extends State<PdfGeneratorPage> {
                     ...widget.addata.map((e) => [
                           e['Description'] ?? '',
                           e['Rate'] ?? '',
-                          e['GST in %'] ?? '',
+                          e['GST'] ?? '',
                           e['Days for ads to be displayed'] ?? '',
                           e['Calculated Rate'] ?? '',
                         ]),
@@ -965,6 +964,51 @@ class _PdfGeneratorPageState extends State<PdfGeneratorPage> {
     });
   }
 
+  Future<void> postData() async {
+    final url = Uri.parse(
+      'https://graphifyserver.vercel.app/api/invoices',
+    ); // Replace with your API endpoint
+    try {
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          'invoice_number': widget.invoicenumber,
+          'recipient_name': widget.name,
+          'phone_number': widget.phno,
+          'address': widget.address,
+          'codelist': widget.tabledata.toString(),
+          'adlist': widget.addata.toString(),
+          'totalamount': widget.totalcost + widget.servicecost,
+          'advance_paid': advancepaid.text,
+          'balance_amount': ((widget.totalcost + widget.servicecost) -
+                  double.parse(advancepaid.text))
+              .toString(),
+        }),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Invoice submitted successfully')),
+        );
+        // Clear form or navigate
+      } else {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Failed to submit invoice')));
+        print('Failed to submit invoice. Status code: ${response.statusCode}');
+        print('Response body: ${response.body}');
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('An error occurred')));
+      print('Error submitting invoice: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -1404,6 +1448,7 @@ class _PdfGeneratorPageState extends State<PdfGeneratorPage> {
             ElevatedButton(
               onPressed: () {
                 _isLoading ? null : _generatePdf();
+                postData();
               },
               style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.blue, overlayColor: Colors.black),
@@ -1411,6 +1456,23 @@ class _PdfGeneratorPageState extends State<PdfGeneratorPage> {
                   padding: EdgeInsets.all(20),
                   child: Text(
                     'Generate Invoice',
+                    style: TextStyle(
+                      fontFamily: GoogleFonts.jost().fontFamily,
+                    ),
+                  )),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => Homepage()));
+              },
+              style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.blue, overlayColor: Colors.black),
+              child: Container(
+                  padding: EdgeInsets.all(20),
+                  child: Text(
+                    'Go to Homepage',
                     style: TextStyle(
                       fontFamily: GoogleFonts.jost().fontFamily,
                     ),

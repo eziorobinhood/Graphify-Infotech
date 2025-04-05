@@ -1,9 +1,9 @@
 const express = require('express');
+var cors = require('cors')
 const mongoose = require('mongoose');
-const cors = require('cors');
 const app = express();
-
-
+app.use(cors());
+app.use(express.json());
 const port = 3000;
 const uri = 'mongodb+srv://rrkrish123:rrkrish123@graphifycluster.irmpn.mongodb.net/?retryWrites=true&w=majority&appName=Graphifycluster';
 
@@ -12,7 +12,7 @@ mongoose
   .then(() => console.log('Connected to MongoDB'))
   .catch((err) => console.error('Error connecting to MongoDB:', err));
 
-  const InvoiceSchema = new mongoose.Schema({
+  const mySchema = new mongoose.Schema({
     invoice_number: String,
     recipient_name: String,
     phone_number: String,
@@ -22,10 +22,7 @@ mongoose
     balance_amount: String,
   });
 
-    const myModel = mongoose.model('Graphify_Invoice_History', InvoiceSchema);
-
-app.use(cors());    
-    
+    const myModel = mongoose.model('Graphify_Invoice_History', mySchema);
 
     app.get('/invoices', async (req, res) => {
       const invoices = await myModel.find();
@@ -52,4 +49,23 @@ app.use(cors());
           res.status(500).json({ error: "Failed to save invoice" });
         }
       });
-      app.listen(port,"0.0.0.0",()=>console.log(`listening to port ${port}`))
+
+      app.post('/api/getsingleinvoice', async (req, res) =>{
+        try{
+          const {invoice_number} = req.body;
+
+          const singleinvoice = await myModel.findOne({invoice_number});
+
+          if(!singleinvoice){
+            return res.status(400).json({message:'Invoice not found'});
+          }
+          else{return res.json};
+        }
+        catch(e){
+          res.status(500).json({error: e.message});
+        }
+      })
+
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Example app listening at http://0.0.0.0:${port}`);
+});
