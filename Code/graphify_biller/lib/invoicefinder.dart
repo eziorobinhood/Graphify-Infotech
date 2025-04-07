@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graphify_biller/model/invoice.dart';
 import 'package:graphify_biller/pdfgen.dart';
+import 'package:graphify_biller/updatedata.dart';
 import 'package:http_interceptor/http_interceptor.dart' as http;
 
 class InvoiceFinder extends StatefulWidget {
@@ -228,11 +229,12 @@ class _InvoiceFinderState extends State<InvoiceFinder> {
                                                     foregroundColor:
                                                         Colors.blue,
                                                     overlayColor: Colors.black),
-                                                onPressed: () => Navigator.push(
+                                                onPressed: () {
+                                                  Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) =>
-                                                          PdfGeneratorPage(
+                                                          InvoiceUpdate(
                                                         name: invoiceData
                                                             .recipient_name,
                                                         phno: invoiceData
@@ -242,24 +244,19 @@ class _InvoiceFinderState extends State<InvoiceFinder> {
                                                         invoicenumber:
                                                             invoiceData
                                                                 .invoice_number,
-                                                        tabledata: decodetable(
-                                                          invoiceData.tabledata,
-                                                        ),
-                                                        addata: json
-                                                            .decode(invoiceData
-                                                                .addata
-                                                                .replaceAll(
-                                                              "'",
-                                                              '"',
-                                                            ))
-                                                            .cast<String>()
-                                                            .toList(),
-                                                        servicecost: 0,
                                                         totalcost: double.parse(
                                                             invoiceData
                                                                 .totalamount),
+                                                        balanceamount:
+                                                            invoiceData
+                                                                .balance_amount,
+                                                        advancepaid: double
+                                                            .parse(invoiceData
+                                                                .advance_paid),
                                                       ),
-                                                    )),
+                                                    ),
+                                                  );
+                                                },
                                                 icon: Icon(
                                                   Icons.create_sharp,
                                                   color: Colors.blue,
