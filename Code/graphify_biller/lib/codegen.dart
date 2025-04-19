@@ -144,77 +144,79 @@ class CodeDescGenState extends State<CodeDescGen> {
                 headingTextStyle: TextStyle(
                     fontFamily: GoogleFonts.jost().fontFamily, fontSize: 20),
                 dataTextStyle: TextStyle(
-                    fontFamily: GoogleFonts.jost().fontFamily, fontSize: 20),
+                    fontFamily: GoogleFonts.jost().fontFamily, fontSize: 16),
                 dataRowHeight: 50,
                 columnSpacing: 10,
                 horizontalMargin: 16,
                 dividerThickness: 1,
               ),
               child: DataTable(
-                columnSpacing: MediaQuery.of(context).size.width * 0.2,
+                columnSpacing: MediaQuery.of(context).size.width * 0.1,
                 horizontalMargin: 16,
                 columns: [
                   DataColumn(
-                      label: Text(
-                    'Description',
-                    style: TextStyle(
-                      fontFamily: GoogleFonts.jost().fontFamily,
-                      fontSize: 20,
+                    label: Text(
+                      'Description',
+                      style: TextStyle(
+                        fontFamily: GoogleFonts.jost().fontFamily,
+                        fontSize: 20,
+                      ),
                     ),
-                  )),
+                  ),
                   DataColumn(
-                      label: Text(
-                    'Rate',
-                    style: TextStyle(
-                        fontFamily: GoogleFonts.jost().fontFamily,
-                        fontSize: 20),
-                  )),
+                    label: Text(
+                      'Rate',
+                      style: TextStyle(
+                          fontFamily: GoogleFonts.jost().fontFamily,
+                          fontSize: 20),
+                    ),
+                  ),
                   DataColumn(
-                      label: Text(
-                    'GST',
-                    style: TextStyle(
-                        fontFamily: GoogleFonts.jost().fontFamily,
-                        fontSize: 20),
-                  )),
+                    label: Text(
+                      'GST',
+                      style: TextStyle(
+                          fontFamily: GoogleFonts.jost().fontFamily,
+                          fontSize: 20),
+                    ),
+                  ),
                   DataColumn(
-                      label: Text(
-                    'Calculated Rate',
-                    style: TextStyle(
-                        fontFamily: GoogleFonts.jost().fontFamily,
-                        fontSize: 20),
-                  )),
+                    label: Text(
+                      'Calculated Rate',
+                      style: TextStyle(
+                          fontFamily: GoogleFonts.jost().fontFamily,
+                          fontSize: 20),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Text(
+                      ' ',
+                      style: TextStyle(
+                          fontFamily: GoogleFonts.jost().fontFamily,
+                          fontSize: 20),
+                    ),
+                  ),
                 ],
-                rows: tabledata.map((row) {
+                rows: tabledata.asMap().entries.map((entry) {
+                  int index = entry.key;
+                  Map<String, dynamic> row = entry.value;
                   return DataRow(cells: [
-                    DataCell(Text(
-                      row['Description'] ?? '',
-                      style: TextStyle(
-                          fontFamily: GoogleFonts.jost().fontFamily,
-                          fontSize: 16),
-                    )),
-                    DataCell(Text(
-                      row['Rate'] ?? '',
-                      style: TextStyle(
-                          fontFamily: GoogleFonts.jost().fontFamily,
-                          fontSize: 16),
-                    )),
-                    DataCell(Text(
-                      row['GST'] ?? '-',
-                      style: TextStyle(
-                          fontFamily: GoogleFonts.jost().fontFamily,
-                          fontSize: 16),
-                    )),
-                    DataCell(Text(
-                      row['Calculated Rate'] ?? '',
-                      style: TextStyle(
-                          fontFamily: GoogleFonts.jost().fontFamily,
-                          fontSize: 16),
-                    )),
+                    DataCell(Text(row['Description'] ?? '')),
+                    DataCell(Text(row['Rate'] ?? '')),
+                    DataCell(Text(row['GST'] ?? '-')),
+                    DataCell(Text(row['Calculated Rate'] ?? '')),
+                    DataCell(
+                      IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () {
+                          // Call a function here to delete the row at 'index'
+                          _deleteRow(index);
+                        },
+                      ),
+                    ),
                   ]);
                 }).toList(),
               ),
             ),
-
             //Updated Totalvalue -  - - - - -- -  - -- - - - - - - - -- - - - - - - -  - - -- -  - - - -
             Text(
               'Total: $totalval',
@@ -250,5 +252,15 @@ class CodeDescGenState extends State<CodeDescGen> {
         )),
       ),
     );
+  }
+
+  void _deleteRow(int index) {
+    setState(() {
+      tabledata.removeAt(index);
+      totalval = 0.0;
+      for (var row in tabledata) {
+        totalval += double.parse(row['Calculated Rate'] ?? '0');
+      }
+    });
   }
 }

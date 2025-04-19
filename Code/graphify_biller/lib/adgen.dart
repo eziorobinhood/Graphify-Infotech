@@ -186,39 +186,31 @@ class _AdGenRateState extends State<AdGenRate> {
                   style: TextStyle(
                       fontFamily: GoogleFonts.jost().fontFamily, fontSize: 20),
                 )),
+                DataColumn(
+                    label: Text(
+                  ' ',
+                  style: TextStyle(
+                      fontFamily: GoogleFonts.jost().fontFamily, fontSize: 20),
+                )),
               ],
-              rows: addata.map((row) {
+              rows: addata.asMap().entries.map((entry) {
+                int index = entry.key;
+                Map<String, dynamic> row = entry.value;
                 return DataRow(cells: [
-                  DataCell(Text(
-                    row['Description'] ?? '',
-                    style: TextStyle(
-                        fontFamily: GoogleFonts.jost().fontFamily,
-                        fontSize: 16),
-                  )),
-                  DataCell(Text(
-                    row['Rate'] ?? '',
-                    style: TextStyle(
-                        fontFamily: GoogleFonts.jost().fontFamily,
-                        fontSize: 16),
-                  )),
-                  DataCell(Text(
-                    row['GST'] ?? '',
-                    style: TextStyle(
-                        fontFamily: GoogleFonts.jost().fontFamily,
-                        fontSize: 16),
-                  )),
-                  DataCell(Text(
-                    row['Days for ads to be displayed'] ?? '',
-                    style: TextStyle(
-                        fontFamily: GoogleFonts.jost().fontFamily,
-                        fontSize: 16),
-                  )),
-                  DataCell(Text(
-                    row['Calculated Rate'] ?? '',
-                    style: TextStyle(
-                        fontFamily: GoogleFonts.jost().fontFamily,
-                        fontSize: 16),
-                  )),
+                  DataCell(Text(row['Description'] ?? '')),
+                  DataCell(Text(row['Rate'] ?? '')),
+                  DataCell(Text(row['GST'] ?? '-')),
+                  DataCell(Text(row['Days for ads to be displayed'] ?? '')),
+                  DataCell(Text(row['Calculated Rate'] ?? '')),
+                  DataCell(
+                    IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        // Call a function here to delete the row at 'index'
+                        _deleteRow(index);
+                      },
+                    ),
+                  ),
                 ]);
               }).toList(),
             ),
@@ -304,5 +296,15 @@ class _AdGenRateState extends State<AdGenRate> {
         )),
       ),
     );
+  }
+
+  void _deleteRow(int index) {
+    setState(() {
+      addata.removeAt(index);
+      totaladvalue = 0.0;
+      for (var row in addata) {
+        totaladvalue += double.parse(row['Calculated Rate'] ?? '0');
+      }
+    });
   }
 }

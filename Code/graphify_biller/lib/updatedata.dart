@@ -1,16 +1,11 @@
 // ignore_for_file: avoid_print
 
-import 'dart:typed_data';
-import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graphify_biller/home.dart';
 import 'package:http_interceptor/http_interceptor.dart' as http;
-import 'package:screenshot/screenshot.dart';
 // ignore: avoid_web_libraries_in_flutter, deprecated_member_use
-import 'dart:html' as html;
 // ignore: deprecated_member_use
-import 'dart:js' as js;
 
 class InvoiceUpdate extends StatefulWidget {
   const InvoiceUpdate(
@@ -277,92 +272,92 @@ class _InvoiceUpdateState extends State<InvoiceUpdate> {
             SizedBox(
               height: 30,
             ),
-            Container(
-              width: MediaQuery.of(context).size.width * 0.45,
-              padding: EdgeInsets.all(40),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.blue.withAlpha((0.5 * 255).toInt()),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.08,
-                  ),
-                  Text(
-                    "Amount paid",
-                    style: TextStyle(
-                      fontFamily: GoogleFonts.jost().fontFamily,
-                      fontSize: 18,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 30,
-                  ),
-                  SizedBox(
-                    width: 200,
-                    child: TextField(
-                      controller: updatebalanceamount,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Enter amount paid',
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                http.Response response = await http.post(
-                  Uri.parse(
-                      'https://graphifyserver.vercel.app/invoices/update-invoice'),
-                  body: {
-                    "invoice_number": widget.invoicenumber,
-                    "balance_amount": (double.parse(widget.balanceamount) -
-                            double.parse(updatebalanceamount.text))
-                        .toString(),
-                    // You can optionally send 'amounttobeupdated' if your backend needs it for logging or other purposes.
-                  },
-                );
-                print(
-                    "_________________see here bastard__________________: ${widget.invoicenumber}");
+            // Container(
+            //   width: MediaQuery.of(context).size.width * 0.45,
+            //   padding: EdgeInsets.all(40),
+            //   decoration: BoxDecoration(
+            //     color: Colors.white,
+            //     borderRadius: BorderRadius.circular(10),
+            //     boxShadow: [
+            //       BoxShadow(
+            //         color: Colors.blue.withAlpha((0.5 * 255).toInt()),
+            //         spreadRadius: 5,
+            //         blurRadius: 7,
+            //         offset: const Offset(0, 3),
+            //       ),
+            //     ],
+            //   ),
+            //   child: Row(
+            //     children: [
+            //       SizedBox(
+            //         width: MediaQuery.of(context).size.width * 0.08,
+            //       ),
+            //       Text(
+            //         "Amount paid",
+            //         style: TextStyle(
+            //           fontFamily: GoogleFonts.jost().fontFamily,
+            //           fontSize: 18,
+            //         ),
+            //       ),
+            //       SizedBox(
+            //         width: 30,
+            //       ),
+            //       SizedBox(
+            //         width: 200,
+            //         child: TextField(
+            //           controller: updatebalanceamount,
+            //           decoration: InputDecoration(
+            //             border: OutlineInputBorder(),
+            //             hintText: 'Enter amount paid',
+            //           ),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // SizedBox(height: 20),
+            // ElevatedButton(
+            //   onPressed: () async {
+            //     http.Response response = await http.post(
+            //       Uri.parse(
+            //           'https://graphifyserver.vercel.app/invoices/update-invoice'),
+            //       body: {
+            //         "invoice_number": widget.invoicenumber,
+            //         "balance_amount": (double.parse(widget.balanceamount) -
+            //                 double.parse(updatebalanceamount.text))
+            //             .toString(),
+            //         // You can optionally send 'amounttobeupdated' if your backend needs it for logging or other purposes.
+            //       },
+            //     );
+            //     print(
+            //         "_________________see here bastard__________________: ${widget.invoicenumber}");
 
-                if (response.statusCode == 200) {
-                  print("Balance updated successfully");
-                  setState(() {
-                    _isLoading = false;
-                    // Optionally, update the local widget.balanceamount
-                  });
-                } else {
-                  print(response.body);
-                  print("Failed to update balance");
+            //     if (response.statusCode == 200) {
+            //       print("Balance updated successfully");
+            //       setState(() {
+            //         _isLoading = false;
+            //         // Optionally, update the local widget.balanceamount
+            //       });
+            //     } else {
+            //       print(response.body);
+            //       print("Failed to update balance");
 
-                  setState(() {
-                    _isLoading = false;
-                  });
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.blue, overlayColor: Colors.black),
-              child: Container(
-                  padding: EdgeInsets.all(20),
-                  child: Text(
-                    'Save Changes',
-                    style: TextStyle(
-                      fontFamily: GoogleFonts.jost().fontFamily,
-                    ),
-                  )),
-            ),
+            //       setState(() {
+            //         _isLoading = false;
+            //       });
+            //     }
+            //   },
+            //   style: ElevatedButton.styleFrom(
+            //       foregroundColor: Colors.blue, overlayColor: Colors.black),
+            //   child: Container(
+            //       padding: EdgeInsets.all(20),
+            //       child: Text(
+            //         'Save Changes',
+            //         style: TextStyle(
+            //           fontFamily: GoogleFonts.jost().fontFamily,
+            //         ),
+            //       )),
+            // ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {

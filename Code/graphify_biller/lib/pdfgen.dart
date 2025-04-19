@@ -1417,6 +1417,16 @@ class _PdfGeneratorPageState extends State<PdfGeneratorPage> {
               ),
               child: Column(
                 children: [
+                  Text(
+                    "Enter 0 if advance not paid",
+                    style: TextStyle(
+                        fontFamily: GoogleFonts.jost().fontFamily,
+                        fontSize: 18,
+                        color: Colors.red),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,

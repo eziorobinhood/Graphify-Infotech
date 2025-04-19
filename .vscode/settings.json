@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "/home/rahuram-krishna/Projects/Graphify-Infotech/Code/graphify_biller/windows"
+    "cmake.sourceDirectory": "/home/rahuram-krishna/Projects/Graphify-Infotech/Code/graphify_biller/windows",
+    "cmake.ignoreCMakeListsMissing": true
 }

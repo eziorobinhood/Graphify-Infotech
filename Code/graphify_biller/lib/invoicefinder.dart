@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graphify_biller/model/invoice.dart';
-import 'package:graphify_biller/pdfgen.dart';
 import 'package:graphify_biller/updatedata.dart';
 import 'package:http_interceptor/http_interceptor.dart' as http;
 
@@ -258,10 +257,10 @@ class _InvoiceFinderState extends State<InvoiceFinder> {
                                                   );
                                                 },
                                                 icon: Icon(
-                                                  Icons.create_sharp,
+                                                  Icons.view_comfy_sharp,
                                                   color: Colors.blue,
                                                 ),
-                                                label: Text('Create Invoice'),
+                                                label: Text('View Invoice'),
                                               ),
                                             ])
                                           ],
